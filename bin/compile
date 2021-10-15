@@ -20,6 +20,12 @@ CACHE_DIR=$2
 ENV_DIR=$3
 BUILDPACK_DIR=$(cd "$(dirname "$0")"; cd ..; pwd)
 
+# Skip compile if DISABLE_DATADOG_AGENT set to true
+if [ "$DISABLE_DATADOG_AGENT" == "true" ]; then
+  echo "DISABLE_DATADOG_AGENT set to true, skipping buildpack..."
+  exit 0
+fi
+
 # Store which STACK we are running on in the cache to bust the cache if it changes
 if [ -f $CACHE_DIR/.apt/STACK ]; then
   CACHED_STACK=$(cat "$CACHE_DIR/.apt/STACK")
